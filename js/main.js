@@ -1,6 +1,5 @@
 const taskManager = new TaskManager();
 
-// O(log n) - Agregar tarea
 function handleAddTask() {
     const id = parseInt(document.getElementById('taskId').value);
     const desc = document.getElementById('taskDesc').value.trim();
@@ -14,15 +13,14 @@ function handleAddTask() {
 
     try {
         taskManager.agregarTarea(id, desc, prio, date);
-        mostrarNotificacion('✓ Tarea agregada exitosamente', 'success');
+        mostrarNotificacion('Tarea agregada exitosamente', 'success');
         limpiarFormulario();
         actualizarVistaHeap();
     } catch (error) {
-        mostrarNotificacion(`✗ ${error.message}`, 'error');
+        mostrarNotificacion(`${error.message}`, 'error');
     }
 }
 
-// O(log n) - Buscar tarea
 function handleSearchTask() {
     const id = parseInt(document.getElementById('searchId').value);
     
@@ -35,17 +33,15 @@ function handleSearchTask() {
     mostrarResultadoBusqueda(tarea);
 }
 
-// O(n) - Marcar tarea como completada
 function handleCompleteTask(id) {
     if (taskManager.marcarCompletada(id)) {
-        mostrarNotificacion('✓ Tarea completada y eliminada del heap', 'success');
+        mostrarNotificacion('Tarea completada y eliminada del heap', 'success');
         actualizarVistaHeap();
     } else {
-        mostrarNotificacion('✗ No se pudo completar la tarea', 'error');
+        mostrarNotificacion('No se pudo completar la tarea', 'error');
     }
 }
 
-// O(n) - Actualizar vista del heap
 function actualizarVistaHeap() {
     const heapList = document.getElementById('heapList');
     const emptyState = document.getElementById('empty-state');
@@ -75,19 +71,18 @@ function actualizarVistaHeap() {
                     class="btn-complete" 
                     onclick="handleCompleteTask(${tarea.id})"
                 >
-                    ✓ Completar
+                    Marcar como completada
                 </button>
             </div>
         </li>
     `).join('');
 }
 
-// O(1) - Mostrar resultado de búsqueda
 function mostrarResultadoBusqueda(tarea, mensajeError = null) {
     const resultDiv = document.getElementById('search-result');
 
     if (mensajeError || !tarea) {
-        resultDiv.innerHTML = `<div class="result-error">${mensajeError || '❌ Tarea no encontrada'}</div>`;
+        resultDiv.innerHTML = `<div class="result-error">${mensajeError || 'Tarea no encontrada'}</div>`;
         return;
     }
 
@@ -98,15 +93,14 @@ function mostrarResultadoBusqueda(tarea, mensajeError = null) {
                 <span class="task-priority priority-${tarea.prioridad.toLowerCase()}">${tarea.prioridad}</span>
             </div>
             <div class="task-desc">${tarea.descripcion}</div>
-            <div class="task-date">📅 ${formatearFecha(tarea.fechaVencimiento)}</div>
+            <div class="task-date">${formatearFecha(tarea.fechaVencimiento)}</div>
             <div style="margin-top: 0.75rem; color: var(--color-text-muted); font-size: 0.875rem;">
-                Estado: ${tarea.completada ? '✓ Completada' : '⏳ Pendiente'}
+                Estado: ${tarea.completada ? 'Completada' : 'Pendiente'}
             </div>
         </div>
     `;
 }
 
-// O(1) - Limpiar formulario
 function limpiarFormulario() {
     document.getElementById('taskId').value = '';
     document.getElementById('taskDesc').value = '';
@@ -114,7 +108,6 @@ function limpiarFormulario() {
     document.getElementById('taskPrio').selectedIndex = 0;
 }
 
-// O(1) - Formatear fecha
 function formatearFecha(fecha) {
     const date = new Date(fecha + 'T00:00:00');
     return date.toLocaleDateString('es-ES', { 
@@ -124,7 +117,6 @@ function formatearFecha(fecha) {
     });
 }
 
-// O(1) - Mostrar notificación
 function mostrarNotificacion(mensaje, tipo) {
     const notif = document.createElement('div');
     notif.style.cssText = `
@@ -150,5 +142,4 @@ function mostrarNotificacion(mensaje, tipo) {
     }, 3000);
 }
 
-// Inicializar vista
 actualizarVistaHeap();
