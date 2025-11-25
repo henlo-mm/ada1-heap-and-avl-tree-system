@@ -78,7 +78,3 @@ proyectoADA1/
 - **HTML5**: Estructura de la interfaz
 - **CSS3**: Estilos modernos (variables CSS, gradientes, animaciones)
 - **JavaScript ES6**: Lógica de la aplicación (clases, arrow functions)
-
-## Autores
-
-Proyecto académico - Análisis y Diseño de Algoritmos I
