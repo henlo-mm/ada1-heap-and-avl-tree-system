@@ -12,24 +12,23 @@ class ArbolAVL {
         this.raiz = null;
     }
 
-    // O(1) - Obtener altura
     obtenerAltura(nodo) {
         return nodo ? nodo.altura : 0;
     }
 
-    // O(1) - Obtener factor de balance
     obtenerBalance(nodo) {
         return nodo ? this.obtenerAltura(nodo.izquierda) - this.obtenerAltura(nodo.derecha) : 0;
     }
 
-    // O(1) - Actualizar altura
     actualizarAltura(nodo) {
         if (nodo) {
-            nodo.altura = 1 + Math.max(this.obtenerAltura(nodo.izquierda), this.obtenerAltura(nodo.derecha));
+            nodo.altura = 1 + Math.max(
+                this.obtenerAltura(nodo.izquierda), 
+                this.obtenerAltura(nodo.derecha)
+            );
         }
     }
 
-    // O(1) - Rotación derecha
     rotarDerecha(y) {
         const x = y.izquierda;
         const T2 = x.derecha;
@@ -43,7 +42,6 @@ class ArbolAVL {
         return x;
     }
 
-    // O(1) - Rotación izquierda
     rotarIzquierda(x) {
         const y = x.derecha;
         const T2 = y.izquierda;
@@ -57,47 +55,41 @@ class ArbolAVL {
         return y;
     }
 
-    // O(log n) - Insertar tarea
     insertar(tarea) {
-        this.raiz = this._insertarNodo(this.raiz, tarea);
+        this.raiz = this.insertarNodo(this.raiz, tarea);
     }
 
-    _insertarNodo(nodo, tarea) {
+    insertarNodo(nodo, tarea) {
         if (!nodo) return new NodoAVL(tarea);
 
         if (tarea.id < nodo.tarea.id) {
-            nodo.izquierda = this._insertarNodo(nodo.izquierda, tarea);
+            nodo.izquierda = this.insertarNodo(nodo.izquierda, tarea);
         } else if (tarea.id > nodo.tarea.id) {
-            nodo.derecha = this._insertarNodo(nodo.derecha, tarea);
+            nodo.derecha = this.insertarNodo(nodo.derecha, tarea);
         } else {
-            return nodo; // ID duplicado
+            return nodo;
         }
 
         this.actualizarAltura(nodo);
-        return this._balancear(nodo);
+        return this.balancear(nodo);
     }
 
-    // O(1) - Balancear nodo
-    _balancear(nodo) {
+    balancear(nodo) {
         const balance = this.obtenerBalance(nodo);
 
-        // Caso Izquierda-Izquierda
         if (balance > 1 && this.obtenerBalance(nodo.izquierda) >= 0) {
             return this.rotarDerecha(nodo);
         }
 
-        // Caso Izquierda-Derecha
         if (balance > 1 && this.obtenerBalance(nodo.izquierda) < 0) {
             nodo.izquierda = this.rotarIzquierda(nodo.izquierda);
             return this.rotarDerecha(nodo);
         }
 
-        // Caso Derecha-Derecha
         if (balance < -1 && this.obtenerBalance(nodo.derecha) <= 0) {
             return this.rotarIzquierda(nodo);
         }
 
-        // Caso Derecha-Izquierda
         if (balance < -1 && this.obtenerBalance(nodo.derecha) > 0) {
             nodo.derecha = this.rotarDerecha(nodo.derecha);
             return this.rotarIzquierda(nodo);
@@ -106,16 +98,15 @@ class ArbolAVL {
         return nodo;
     }
 
-    // O(log n) - Buscar por ID
     buscar(id) {
-        return this._buscarNodo(this.raiz, id);
+        return this.buscarNodo(this.raiz, id);
     }
 
-    _buscarNodo(nodo, id) {
+    buscarNodo(nodo, id) {
         if (!nodo) return null;
         
         if (id === nodo.tarea.id) return nodo.tarea;
-        if (id < nodo.tarea.id) return this._buscarNodo(nodo.izquierda, id);
-        return this._buscarNodo(nodo.derecha, id);
+        if (id < nodo.tarea.id) return this.buscarNodo(nodo.izquierda, id);
+        return this.buscarNodo(nodo.derecha, id);
     }
 }

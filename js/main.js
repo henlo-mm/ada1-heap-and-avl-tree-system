@@ -2,22 +2,22 @@ const taskManager = new TaskManager();
 
 function handleAddTask() {
     const id = parseInt(document.getElementById('taskId').value);
-    const desc = document.getElementById('taskDesc').value.trim();
-    const prio = document.getElementById('taskPrio').value;
-    const date = document.getElementById('taskDate').value;
+    const descripcion = document.getElementById('taskDesc').value.trim();
+    const prioridad = document.getElementById('taskPrio').value;
+    const fecha = document.getElementById('taskDate').value;
 
-    if (!id || !desc || !date) {
-        mostrarNotificacion('Por favor complete todos los campos', 'error');
+    if (!validarCampos(id, descripcion, fecha)) {
+        mostrarNotificacion('Complete todos los campos', 'error');
         return;
     }
 
     try {
-        taskManager.agregarTarea(id, desc, prio, date);
-        mostrarNotificacion('Tarea agregada exitosamente', 'success');
+        taskManager.agregarTarea(id, descripcion, prioridad, fecha);
+        mostrarNotificacion('Tarea agregada', 'success');
         limpiarFormulario();
         actualizarVistaHeap();
     } catch (error) {
-        mostrarNotificacion(`${error.message}`, 'error');
+        mostrarNotificacion(error.message, 'error');
     }
 }
 
@@ -35,10 +35,10 @@ function handleSearchTask() {
 
 function handleCompleteTask(id) {
     if (taskManager.marcarCompletada(id)) {
-        mostrarNotificacion('Tarea completada y eliminada del heap', 'success');
+        mostrarNotificacion('Tarea completada', 'success');
         actualizarVistaHeap();
     } else {
-        mostrarNotificacion('No se pudo completar la tarea', 'error');
+        mostrarNotificacion('Error al completar', 'error');
     }
 }
 
@@ -56,7 +56,11 @@ function actualizarVistaHeap() {
     heapList.style.display = 'flex';
     emptyState.style.display = 'none';
     
-    heapList.innerHTML = tareas.map(tarea => `
+    heapList.innerHTML = tareas.map(tarea => crearElementoTarea(tarea)).join('');
+}
+
+function crearElementoTarea(tarea) {
+    return `
         <li class="task-item">
             <div class="task-content">
                 <div class="task-item-header">
@@ -64,18 +68,15 @@ function actualizarVistaHeap() {
                     <span class="task-priority priority-${tarea.prioridad.toLowerCase()}">${tarea.prioridad}</span>
                 </div>
                 <div class="task-desc">${tarea.descripcion}</div>
-                <div class="task-date">📅 ${formatearFecha(tarea.fechaVencimiento)}</div>
+                <div class="task-date">${formatearFecha(tarea.fechaVencimiento)}</div>
             </div>
             <div class="task-actions">
-                <button 
-                    class="btn-complete" 
-                    onclick="handleCompleteTask(${tarea.id})"
-                >
-                    Marcar como completada
+                <button class="btn-complete" onclick="handleCompleteTask(${tarea.id})">
+                    Completar
                 </button>
             </div>
         </li>
-    `).join('');
+    `;
 }
 
 function mostrarResultadoBusqueda(tarea, mensajeError = null) {
@@ -94,11 +95,15 @@ function mostrarResultadoBusqueda(tarea, mensajeError = null) {
             </div>
             <div class="task-desc">${tarea.descripcion}</div>
             <div class="task-date">${formatearFecha(tarea.fechaVencimiento)}</div>
-            <div style="margin-top: 0.75rem; color: var(--color-text-muted); font-size: 0.875rem;">
+            <div class="task-status">
                 Estado: ${tarea.completada ? 'Completada' : 'Pendiente'}
             </div>
         </div>
     `;
+}
+
+function validarCampos(id, descripcion, fecha) {
+    return id && descripcion && fecha;
 }
 
 function limpiarFormulario() {
@@ -118,27 +123,15 @@ function formatearFecha(fecha) {
 }
 
 function mostrarNotificacion(mensaje, tipo) {
-    const notif = document.createElement('div');
-    notif.style.cssText = `
-        position: fixed;
-        top: 2rem;
-        right: 2rem;
-        padding: 1rem 1.5rem;
-        border-radius: 0.5rem;
-        font-weight: 600;
-        z-index: 1000;
-        animation: fadeIn 0.3s ease-out;
-        box-shadow: var(--shadow-xl);
-        ${tipo === 'success' 
-            ? 'background: linear-gradient(135deg, #10b981, #059669); color: white;' 
-            : 'background: linear-gradient(135deg, #ef4444, #dc2626); color: white;'}
-    `;
-    notif.textContent = mensaje;
-    document.body.appendChild(notif);
+    const notificacion = document.createElement('div');
+    notificacion.className = `notificacion notificacion-${tipo}`;
+    notificacion.textContent = mensaje;
+    
+    document.body.appendChild(notificacion);
 
     setTimeout(() => {
-        notif.style.animation = 'fadeOut 0.3s ease-out';
-        setTimeout(() => notif.remove(), 300);
+        notificacion.classList.add('notificacion-ocultar');
+        setTimeout(() => notificacion.remove(), 300);
     }, 3000);
 }
 

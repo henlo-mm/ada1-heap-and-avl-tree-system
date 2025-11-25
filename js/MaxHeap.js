@@ -13,19 +13,30 @@ class MaxHeap {
             const parentIndex = Math.floor((index - 1) / 2);
             if (this.heap[index].compararPrioridad(this.heap[parentIndex]) <= 0) break;
             
-            [this.heap[index], this.heap[parentIndex]] = [this.heap[parentIndex], this.heap[index]];
+            this.swap(index, parentIndex);
             index = parentIndex;
         }
     }
 
-    extraerMax() {
-        if (this.heap.length === 0) return null;
-        if (this.heap.length === 1) return this.heap.pop();
+    eliminarPorId(id) {
+        const index = this.heap.findIndex(tarea => tarea.id === id);
+        if (index === -1) return false;
 
-        const max = this.heap[0];
-        this.heap[0] = this.heap.pop();
-        this.heapifyDown(0);
-        return max;
+        const ultimoIndex = this.heap.length - 1;
+        this.swap(index, ultimoIndex);
+        this.heap.pop();
+
+        if (index < this.heap.length) {
+            const parentIndex = Math.floor((index - 1) / 2);
+            
+            if (index > 0 && this.heap[index].compararPrioridad(this.heap[parentIndex]) > 0) {
+                this.heapifyUp(index);
+            } else {
+                this.heapifyDown(index);
+            }
+        }
+
+        return true;
     }
 
     heapifyDown(index) {
@@ -46,9 +57,13 @@ class MaxHeap {
 
             if (largest === index) break;
 
-            [this.heap[index], this.heap[largest]] = [this.heap[largest], this.heap[index]];
+            this.swap(index, largest);
             index = largest;
         }
+    }
+
+    swap(i, j) {
+        [this.heap[i], this.heap[j]] = [this.heap[j], this.heap[i]];
     }
 
     obtenerTodas() {
@@ -61,27 +76,5 @@ class MaxHeap {
 
     tamaño() {
         return this.heap.length;
-    }
-
-    eliminarPorId(id) {
-        const index = this.heap.findIndex(tarea => tarea.id === id);
-        if (index === -1) return false;
-
-        const ultimoIndex = this.heap.length - 1;
-        [this.heap[index], this.heap[ultimoIndex]] = [this.heap[ultimoIndex], this.heap[index]];
-        
-        this.heap.pop();
-
-        if (index < this.heap.length) {
-            const parent = Math.floor((index - 1) / 2);
-            
-            if (index > 0 && this.heap[index].compararPrioridad(this.heap[parent]) > 0) {
-                this.heapifyUp(index);
-            } else {
-                this.heapifyDown(index);
-            }
-        }
-
-        return true;
     }
 }

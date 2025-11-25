@@ -2,7 +2,7 @@ class TaskManager {
     constructor() {
         this.heap = new MaxHeap();
         this.avl = new ArbolAVL();
-        this.idsUsados = new Set(); 
+        this.idsUsados = new Set();
     }
 
     agregarTarea(id, descripcion, prioridad, fechaVencimiento) {
@@ -27,7 +27,6 @@ class TaskManager {
         if (!tarea) return false;
 
         tarea.marcarCompletada();
-        
         this.heap.eliminarPorId(id);
         
         return true;
