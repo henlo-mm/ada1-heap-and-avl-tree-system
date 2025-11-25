@@ -1,80 +1,80 @@
 class MaxHeap {
     constructor() {
-        this.monticulo = [];
+        this.heap = [];
     }
 
-    insertar(tarea) {
-        this.monticulo.push(tarea);
-        this.heapificarArriba(this.monticulo.length - 1);
+    insert(task) {
+        this.heap.push(task);
+        this.heapifyUp(this.heap.length - 1);
     }
 
-    heapificarArriba(indice) {
-        while (indice > 0) {
-            const indicePadre = Math.floor((indice - 1) / 2);
-            if (this.monticulo[indice].compararPrioridad(this.monticulo[indicePadre]) <= 0) break;
+    heapifyUp(index) {
+        while (index > 0) {
+            const parentIndex = Math.floor((index - 1) / 2);
+            if (this.heap[index].comparePriority(this.heap[parentIndex]) <= 0) break;
             
-            this.intercambiar(indice, indicePadre);
-            indice = indicePadre;
+            this.swap(index, parentIndex);
+            index = parentIndex;
         }
     }
 
-    eliminarPorId(id) {
-        const indice = this.monticulo.findIndex(tarea => tarea.id === id);
-        if (indice === -1) return false;
+    removeById(id) {
+        const index = this.heap.findIndex(task => task.id === id);
+        if (index === -1) return false;
 
-        const ultimoIndice = this.monticulo.length - 1;
-        this.intercambiar(indice, ultimoIndice);
-        this.monticulo.pop();
+        const lastIndex = this.heap.length - 1;
+        this.swap(index, lastIndex);
+        this.heap.pop();
 
-        if (indice < this.monticulo.length) {
-            const indicePadre = Math.floor((indice - 1) / 2);
+        if (index < this.heap.length) {
+            const parentIndex = Math.floor((index - 1) / 2);
             
-            if (indice > 0 && this.monticulo[indice].compararPrioridad(this.monticulo[indicePadre]) > 0) {
-                this.heapificarArriba(indice);
+            if (index > 0 && this.heap[index].comparePriority(this.heap[parentIndex]) > 0) {
+                this.heapifyUp(index);
             } else {
-                this.heapificarAbajo(indice);
+                this.heapifyDown(index);
             }
         }
 
         return true;
     }
 
-    heapificarAbajo(indice) {
-        const longitud = this.monticulo.length;
+    heapifyDown(index) {
+        const length = this.heap.length;
         
         while (true) {
-            let mayor = indice;
-            const hijoIzquierdo = 2 * indice + 1;
-            const hijoDerecho = 2 * indice + 2;
+            let largest = index;
+            const leftChild = 2 * index + 1;
+            const rightChild = 2 * index + 2;
 
-            if (hijoIzquierdo < longitud && this.monticulo[hijoIzquierdo].compararPrioridad(this.monticulo[mayor]) > 0) {
-                mayor = hijoIzquierdo;
+            if (leftChild < length && this.heap[leftChild].comparePriority(this.heap[largest]) > 0) {
+                largest = leftChild;
             }
 
-            if (hijoDerecho < longitud && this.monticulo[hijoDerecho].compararPrioridad(this.monticulo[mayor]) > 0) {
-                mayor = hijoDerecho;
+            if (rightChild < length && this.heap[rightChild].comparePriority(this.heap[largest]) > 0) {
+                largest = rightChild;
             }
 
-            if (mayor === indice) break;
+            if (largest === index) break;
 
-            this.intercambiar(indice, mayor);
-            indice = mayor;
+            this.swap(index, largest);
+            index = largest;
         }
     }
 
-    intercambiar(i, j) {
-        [this.monticulo[i], this.monticulo[j]] = [this.monticulo[j], this.monticulo[i]];
+    swap(i, j) {
+        [this.heap[i], this.heap[j]] = [this.heap[j], this.heap[i]];
     }
 
-    obtenerTodas() {
-        return [...this.monticulo];
+    getAll() {
+        return [...this.heap];
     }
 
-    estaVacio() {
-        return this.monticulo.length === 0;
+    isEmpty() {
+        return this.heap.length === 0;
     }
 
-    tamanio() {
-        return this.monticulo.length;
+    size() {
+        return this.heap.length;
     }
 }

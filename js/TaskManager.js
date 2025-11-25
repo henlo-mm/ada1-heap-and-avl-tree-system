@@ -1,42 +1,42 @@
 class TaskManager {
     constructor() {
         this.heap = new MaxHeap();
-        this.avl = new ArbolAVL();
-        this.idsUsados = new Set();
+        this.avl = new AVLTree();
+        this.usedIds = new Set();
     }
 
-    agregarTarea(id, descripcion, prioridad, fechaVencimiento) {
-        if (this.idsUsados.has(id)) {
+    addTask(id, description, priority, dueDate) {
+        if (this.usedIds.has(id)) {
             throw new Error('El ID ya existe');
         }
 
-        const tarea = new Tarea(id, descripcion, prioridad, fechaVencimiento);
-        this.heap.insertar(tarea);
-        this.avl.insertar(tarea);
-        this.idsUsados.add(id);
+        const task = new Task(id, description, priority, dueDate);
+        this.heap.insert(task);
+        this.avl.insert(task);
+        this.usedIds.add(id);
         
-        return tarea;
+        return task;
     }
 
-    buscarTarea(id) {
-        return this.avl.buscar(id);
+    searchTask(id) {
+        return this.avl.search(id);
     }
 
-    marcarCompletada(id) {
-        const tarea = this.buscarTarea(id);
-        if (!tarea) return false;
+    markCompleted(id) {
+        const task = this.searchTask(id);
+        if (!task) return false;
 
-        tarea.marcarCompletada();
-        this.heap.eliminarPorId(id);
+        task.markCompleted();
+        this.heap.removeById(id);
         
         return true;
     }
 
-    obtenerTareasHeap() {
-        return this.heap.obtenerTodas();
+    getHeapTasks() {
+        return this.heap.getAll();
     }
 
-    hayTareas() {
-        return !this.heap.estaVacio();
+    hasTasks() {
+        return !this.heap.isEmpty();
     }
 }

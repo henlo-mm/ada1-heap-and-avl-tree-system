@@ -2,22 +2,22 @@ const taskManager = new TaskManager();
 
 function handleAddTask() {
     const id = parseInt(document.getElementById('taskId').value);
-    const descripcion = document.getElementById('taskDesc').value.trim();
-    const prioridad = document.getElementById('taskPrio').value;
-    const fecha = document.getElementById('taskDate').value;
+    const description = document.getElementById('taskDesc').value.trim();
+    const priority = document.getElementById('taskPrio').value;
+    const date = document.getElementById('taskDate').value;
 
-    if (!validarCampos(id, descripcion, fecha)) {
-        mostrarNotificacion('Complete todos los campos', 'error');
+    if (!validateFields(id, description, date)) {
+        showNotification('Complete todos los campos', 'error');
         return;
     }
 
     try {
-        taskManager.agregarTarea(id, descripcion, prioridad, fecha);
-        mostrarNotificacion('Tarea agregada exitosamente', 'success');
-        limpiarFormulario();
-        actualizarVistaHeap();
+        taskManager.addTask(id, description, priority, date);
+        showNotification('Tarea agregada exitosamente', 'success');
+        clearForm();
+        updateHeapView();
     } catch (error) {
-        mostrarNotificacion(error.message, 'error');
+        showNotification(error.message, 'error');
     }
 }
 
@@ -25,29 +25,29 @@ function handleSearchTask() {
     const id = parseInt(document.getElementById('searchId').value);
     
     if (!id) {
-        mostrarResultadoBusqueda(null, 'Ingrese un ID válido');
+        showSearchResult(null, 'Ingrese un ID válido');
         return;
     }
 
-    const tarea = taskManager.buscarTarea(id);
-    mostrarResultadoBusqueda(tarea);
+    const task = taskManager.searchTask(id);
+    showSearchResult(task);
 }
 
 function handleCompleteTask(id) {
-    if (taskManager.marcarCompletada(id)) {
-        mostrarNotificacion('Tarea completada y eliminada del heap', 'success');
-        actualizarVistaHeap();
+    if (taskManager.markCompleted(id)) {
+        showNotification('Tarea completada y eliminada del heap', 'success');
+        updateHeapView();
     } else {
-        mostrarNotificacion('Error al completar la tarea', 'error');
+        showNotification('Error al completar la tarea', 'error');
     }
 }
 
-function actualizarVistaHeap() {
+function updateHeapView() {
     const heapList = document.getElementById('heapList');
     const emptyState = document.getElementById('empty-state');
-    const tareas = taskManager.obtenerTareasHeap();
+    const tasks = taskManager.getHeapTasks();
 
-    if (tareas.length === 0) {
+    if (tasks.length === 0) {
         heapList.style.display = 'none';
         emptyState.style.display = 'block';
         return;
@@ -56,22 +56,22 @@ function actualizarVistaHeap() {
     heapList.style.display = 'flex';
     emptyState.style.display = 'none';
     
-    heapList.innerHTML = tareas.map(tarea => crearElementoTarea(tarea)).join('');
+    heapList.innerHTML = tasks.map(task => createTaskElement(task)).join('');
 }
 
-function crearElementoTarea(tarea) {
+function createTaskElement(task) {
     return `
         <li class="task-item">
             <div class="task-content">
                 <div class="task-item-header">
-                    <span class="task-id">#${tarea.id}</span>
-                    <span class="task-priority priority-${tarea.prioridad.toLowerCase()}">${tarea.prioridad}</span>
+                    <span class="task-id">#${task.id}</span>
+                    <span class="task-priority priority-${task.priority.toLowerCase()}">${task.priority}</span>
                 </div>
-                <div class="task-desc">${tarea.descripcion}</div>
-                <div class="task-date">Vencimiento: ${formatearFecha(tarea.fechaVencimiento)}</div>
+                <div class="task-desc">${task.description}</div>
+                <div class="task-date">Vencimiento: ${formatDate(task.dueDate)}</div>
             </div>
             <div class="task-actions">
-                <button class="btn-complete" onclick="handleCompleteTask(${tarea.id})">
+                <button class="btn-complete" onclick="handleCompleteTask(${task.id})">
                     Completar
                 </button>
             </div>
@@ -79,60 +79,60 @@ function crearElementoTarea(tarea) {
     `;
 }
 
-function mostrarResultadoBusqueda(tarea, mensajeError = null) {
+function showSearchResult(task, errorMessage = null) {
     const resultDiv = document.getElementById('search-result');
 
-    if (mensajeError || !tarea) {
-        resultDiv.innerHTML = `<div class="result-error">${mensajeError || 'Tarea no encontrada'}</div>`;
+    if (errorMessage || !task) {
+        resultDiv.innerHTML = `<div class="result-error">${errorMessage || 'Tarea no encontrada'}</div>`;
         return;
     }
 
     resultDiv.innerHTML = `
         <div class="result-card">
             <div class="task-item-header">
-                <span class="task-id">#${tarea.id}</span>
-                <span class="task-priority priority-${tarea.prioridad.toLowerCase()}">${tarea.prioridad}</span>
+                <span class="task-id">#${task.id}</span>
+                <span class="task-priority priority-${task.priority.toLowerCase()}">${task.priority}</span>
             </div>
-            <div class="task-desc">${tarea.descripcion}</div>
-            <div class="task-date">Vencimiento: ${formatearFecha(tarea.fechaVencimiento)}</div>
+            <div class="task-desc">${task.description}</div>
+            <div class="task-date">Vencimiento: ${formatDate(task.dueDate)}</div>
             <div class="task-status">
-                Estado: ${tarea.completada ? 'Completada' : 'Pendiente'}
+                Estado: ${task.completed ? 'Completada' : 'Pendiente'}
             </div>
         </div>
     `;
 }
 
-function validarCampos(id, descripcion, fecha) {
-    return id && descripcion && fecha;
+function validateFields(id, description, date) {
+    return id && description && date;
 }
 
-function limpiarFormulario() {
+function clearForm() {
     document.getElementById('taskId').value = '';
     document.getElementById('taskDesc').value = '';
     document.getElementById('taskDate').value = '';
     document.getElementById('taskPrio').selectedIndex = 0;
 }
 
-function formatearFecha(fecha) {
-    const date = new Date(fecha + 'T00:00:00');
-    return date.toLocaleDateString('es-ES', { 
+function formatDate(date) {
+    const dateObj = new Date(date + 'T00:00:00');
+    return dateObj.toLocaleDateString('es-ES', { 
         year: 'numeric', 
         month: 'long', 
         day: 'numeric' 
     });
 }
 
-function mostrarNotificacion(mensaje, tipo) {
-    const notificacion = document.createElement('div');
-    notificacion.className = `notificacion notificacion-${tipo}`;
-    notificacion.textContent = mensaje;
+function showNotification(message, type) {
+    const notification = document.createElement('div');
+    notification.className = `notification notification-${type}`;
+    notification.textContent = message;
     
-    document.body.appendChild(notificacion);
+    document.body.appendChild(notification);
 
     setTimeout(() => {
-        notificacion.classList.add('notificacion-ocultar');
-        setTimeout(() => notificacion.remove(), 300);
+        notification.classList.add('notification-hide');
+        setTimeout(() => notification.remove(), 300);
     }, 3000);
 }
 
-actualizarVistaHeap();
+updateHeapView();
