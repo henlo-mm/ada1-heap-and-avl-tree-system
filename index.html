@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Sistema de Gestión de Tareas (Heap + AVL)</title>
+        <link rel="stylesheet" href="css/styles.css">
+    </head>
+    <body>
+        <div class="min-h-screen bg-gradient">
+            <div class="container">
+                <header class="header">
+                    <h1 class="title">Gestión de Tareas</h1>
+                    <p class="subtitle">Heap & AVL Tree System</p>
+                </header>
+
+                <div class="grid">
+                    <!-- Formulario de Nueva Tarea -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">Nueva Tarea</h2>
+                            <span class="badge">Crear</span>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label class="label" for="taskId">ID Único</label>
+                                <input type="number" id="taskId" class="input" placeholder="101" min="1">
+                            </div>
+                            <div class="form-group">
+                                <label class="label" for="taskDesc">Descripción</label>
+                                <input type="text" id="taskDesc" class="input" placeholder="Estudiar Algoritmos">
+                            </div>
+                            <div class="form-group">
+                                <label class="label" for="taskPrio">Prioridad</label>
+                                <select id="taskPrio" class="select">
+                                    <option value="Alta">🔴 Alta</option>
+                                    <option value="Media">🟡 Media</option>
+                                    <option value="Baja">🟢 Baja</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="label" for="taskDate">Fecha Vencimiento</label>
+                                <input type="date" id="taskDate" class="input">
+                            </div>
+                            <button onclick="handleAddTask()" class="btn btn-primary">
+                                <span>➕</span> Agregar Tarea
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Búsqueda por ID -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">Búsqueda por ID</h2>
+                            <span class="badge badge-secondary">AVL Tree</span>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label class="label" for="searchId">ID de Tarea</label>
+                                <div class="input-group">
+                                    <input type="number" id="searchId" class="input" placeholder="Ingrese ID" min="1">
+                                    <button onclick="handleSearchTask()" class="btn btn-secondary">
+                                        Buscar
+                                    </button>
+                                </div>
+                            </div>
+                            <div id="search-result" class="search-result"></div>
+                        </div>
+                    </div>
+
+                    <!-- Cola de Prioridad -->
+                    <div class="card card-full">
+                        <div class="card-header">
+                            <h2 class="card-title">Cola de Prioridad</h2>
+                            <span class="badge badge-accent">Max Heap</span>
+                        </div>
+                        <div class="card-body">
+                            <p class="info-text">Ordenado automáticamente por prioridad: Alta → Media → Baja</p>
+                            <ul id="heapList" class="task-list"></ul>
+                            <div id="empty-state" class="empty-state">
+                                <p>No hay tareas en la cola</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script src="js/Tarea.js"></script>         
+        <script src="js/MaxHeap.js"></script>       
+        <script src="js/ArbolAVL.js"></script>      
+        <script src="js/TaskManager.js"></script>   
+        <script src="js/main.js"></script>          
+    </body>
+</html>
