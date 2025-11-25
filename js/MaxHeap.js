@@ -1,80 +1,80 @@
 class MaxHeap {
     constructor() {
-        this.heap = [];
+        this.monticulo = [];
     }
 
     insertar(tarea) {
-        this.heap.push(tarea);
-        this.heapifyUp(this.heap.length - 1);
+        this.monticulo.push(tarea);
+        this.heapificarArriba(this.monticulo.length - 1);
     }
 
-    heapifyUp(index) {
-        while (index > 0) {
-            const parentIndex = Math.floor((index - 1) / 2);
-            if (this.heap[index].compararPrioridad(this.heap[parentIndex]) <= 0) break;
+    heapificarArriba(indice) {
+        while (indice > 0) {
+            const indicePadre = Math.floor((indice - 1) / 2);
+            if (this.monticulo[indice].compararPrioridad(this.monticulo[indicePadre]) <= 0) break;
             
-            this.swap(index, parentIndex);
-            index = parentIndex;
+            this.intercambiar(indice, indicePadre);
+            indice = indicePadre;
         }
     }
 
     eliminarPorId(id) {
-        const index = this.heap.findIndex(tarea => tarea.id === id);
-        if (index === -1) return false;
+        const indice = this.monticulo.findIndex(tarea => tarea.id === id);
+        if (indice === -1) return false;
 
-        const ultimoIndex = this.heap.length - 1;
-        this.swap(index, ultimoIndex);
-        this.heap.pop();
+        const ultimoIndice = this.monticulo.length - 1;
+        this.intercambiar(indice, ultimoIndice);
+        this.monticulo.pop();
 
-        if (index < this.heap.length) {
-            const parentIndex = Math.floor((index - 1) / 2);
+        if (indice < this.monticulo.length) {
+            const indicePadre = Math.floor((indice - 1) / 2);
             
-            if (index > 0 && this.heap[index].compararPrioridad(this.heap[parentIndex]) > 0) {
-                this.heapifyUp(index);
+            if (indice > 0 && this.monticulo[indice].compararPrioridad(this.monticulo[indicePadre]) > 0) {
+                this.heapificarArriba(indice);
             } else {
-                this.heapifyDown(index);
+                this.heapificarAbajo(indice);
             }
         }
 
         return true;
     }
 
-    heapifyDown(index) {
-        const length = this.heap.length;
+    heapificarAbajo(indice) {
+        const longitud = this.monticulo.length;
         
         while (true) {
-            let largest = index;
-            const leftChild = 2 * index + 1;
-            const rightChild = 2 * index + 2;
+            let mayor = indice;
+            const hijoIzquierdo = 2 * indice + 1;
+            const hijoDerecho = 2 * indice + 2;
 
-            if (leftChild < length && this.heap[leftChild].compararPrioridad(this.heap[largest]) > 0) {
-                largest = leftChild;
+            if (hijoIzquierdo < longitud && this.monticulo[hijoIzquierdo].compararPrioridad(this.monticulo[mayor]) > 0) {
+                mayor = hijoIzquierdo;
             }
 
-            if (rightChild < length && this.heap[rightChild].compararPrioridad(this.heap[largest]) > 0) {
-                largest = rightChild;
+            if (hijoDerecho < longitud && this.monticulo[hijoDerecho].compararPrioridad(this.monticulo[mayor]) > 0) {
+                mayor = hijoDerecho;
             }
 
-            if (largest === index) break;
+            if (mayor === indice) break;
 
-            this.swap(index, largest);
-            index = largest;
+            this.intercambiar(indice, mayor);
+            indice = mayor;
         }
     }
 
-    swap(i, j) {
-        [this.heap[i], this.heap[j]] = [this.heap[j], this.heap[i]];
+    intercambiar(i, j) {
+        [this.monticulo[i], this.monticulo[j]] = [this.monticulo[j], this.monticulo[i]];
     }
 
     obtenerTodas() {
-        return [...this.heap];
+        return [...this.monticulo];
     }
 
     estaVacio() {
-        return this.heap.length === 0;
+        return this.monticulo.length === 0;
     }
 
-    tamaño() {
-        return this.heap.length;
+    tamanio() {
+        return this.monticulo.length;
     }
 }
