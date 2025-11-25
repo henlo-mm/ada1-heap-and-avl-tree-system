@@ -11,18 +11,18 @@
             <div class="container">
                 <header class="header">
                     <h1 class="title">Gestión de Tareas</h1>
-                    <p class="subtitle">Heap & AVL Tree System</p>
+                    <p class="subtitle">Sistema Heap y Árbol AVL</p>
                 </header>
 
                 <div class="grid">
                     <div class="card">
                         <div class="card-header">
-                            <h2 class="card-title">Nueva tarea</h2>
+                            <h2 class="card-title">Nueva Tarea</h2>
                             <span class="badge">Crear</span>
                         </div>
                         <div class="card-body">
                             <div class="form-group">
-                                <label class="label" for="taskId">ID único</label>
+                                <label class="label" for="taskId">ID Único</label>
                                 <input type="number" id="taskId" class="input" placeholder="101" min="1">
                             </div>
                             <div class="form-group">
@@ -32,17 +32,17 @@
                             <div class="form-group">
                                 <label class="label" for="taskPrio">Prioridad</label>
                                 <select id="taskPrio" class="select">
-                                    <option value="Alta">🔴 Alta</option>
-                                    <option value="Media">🟡 Media</option>
-                                    <option value="Baja">🟢 Baja</option>
+                                    <option value="Alta">Alta</option>
+                                    <option value="Media">Media</option>
+                                    <option value="Baja">Baja</option>
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label class="label" for="taskDate">Fecha de vencimiento</label>
+                                <label class="label" for="taskDate">Fecha Vencimiento</label>
                                 <input type="date" id="taskDate" class="input">
                             </div>
                             <button onclick="handleAddTask()" class="btn btn-primary">
-                                <span>+</span> Agregar tarea
+                                Agregar Tarea
                             </button>
                         </div>
                     </div>
@@ -50,11 +50,11 @@
                     <div class="card">
                         <div class="card-header">
                             <h2 class="card-title">Búsqueda por ID</h2>
-                            <span class="badge badge-secondary">AVL Tree</span>
+                            <span class="badge badge-secondary">Árbol AVL</span>
                         </div>
                         <div class="card-body">
                             <div class="form-group">
-                                <label class="label" for="searchId">ID de tarea</label>
+                                <label class="label" for="searchId">ID de Tarea</label>
                                 <div class="input-group">
                                     <input type="number" id="searchId" class="input" placeholder="Ingrese ID" min="1">
                                     <button onclick="handleSearchTask()" class="btn btn-secondary">
@@ -68,11 +68,11 @@
 
                     <div class="card card-full">
                         <div class="card-header">
-                            <h2 class="card-title">Cola de prioridad</h2>
+                            <h2 class="card-title">Cola de Prioridad</h2>
                             <span class="badge badge-accent">Max Heap</span>
                         </div>
                         <div class="card-body">
-                            <p class="info-text">Ordenado automáticamente por prioridad: Alta -> Media -> Baja</p>
+                            <p class="info-text">Ordenado automáticamente por prioridad: Alta > Media > Baja</p>
                             <ul id="heapList" class="task-list"></ul>
                             <div id="empty-state" class="empty-state">
                                 <p>No hay tareas en la cola</p>

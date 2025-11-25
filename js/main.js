@@ -13,7 +13,7 @@ function handleAddTask() {
 
     try {
         taskManager.agregarTarea(id, descripcion, prioridad, fecha);
-        mostrarNotificacion('Tarea agregada', 'success');
+        mostrarNotificacion('Tarea agregada exitosamente', 'success');
         limpiarFormulario();
         actualizarVistaHeap();
     } catch (error) {
@@ -35,10 +35,10 @@ function handleSearchTask() {
 
 function handleCompleteTask(id) {
     if (taskManager.marcarCompletada(id)) {
-        mostrarNotificacion('Tarea completada', 'success');
+        mostrarNotificacion('Tarea completada y eliminada del heap', 'success');
         actualizarVistaHeap();
     } else {
-        mostrarNotificacion('Error al completar', 'error');
+        mostrarNotificacion('Error al completar la tarea', 'error');
     }
 }
 
@@ -68,7 +68,7 @@ function crearElementoTarea(tarea) {
                     <span class="task-priority priority-${tarea.prioridad.toLowerCase()}">${tarea.prioridad}</span>
                 </div>
                 <div class="task-desc">${tarea.descripcion}</div>
-                <div class="task-date">${formatearFecha(tarea.fechaVencimiento)}</div>
+                <div class="task-date">Vencimiento: ${formatearFecha(tarea.fechaVencimiento)}</div>
             </div>
             <div class="task-actions">
                 <button class="btn-complete" onclick="handleCompleteTask(${tarea.id})">
@@ -94,7 +94,7 @@ function mostrarResultadoBusqueda(tarea, mensajeError = null) {
                 <span class="task-priority priority-${tarea.prioridad.toLowerCase()}">${tarea.prioridad}</span>
             </div>
             <div class="task-desc">${tarea.descripcion}</div>
-            <div class="task-date">${formatearFecha(tarea.fechaVencimiento)}</div>
+            <div class="task-date">Vencimiento: ${formatearFecha(tarea.fechaVencimiento)}</div>
             <div class="task-status">
                 Estado: ${tarea.completada ? 'Completada' : 'Pendiente'}
             </div>
