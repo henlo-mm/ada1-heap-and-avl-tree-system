@@ -1,30 +1,84 @@
-# Sistema de Gestión de Tareas con Estructuras de Datos Avanzadas
+# Sistema de Gestión de Tareas con Heap y Árbol AVL
 
-## Descripción del Proyecto
-Este proyecto es una aplicación web para la gestión de tareas que implementa dos estructuras de datos fundamentales para garantizar la eficiencia:
-1. [cite_start]**Colas de Prioridad con Montículos (Max-Heap):** Para gestionar tareas asegurando que las de prioridad "Alta" sean atendidas primero[cite: 1].
-2. [cite_start]**Árboles AVL:** Para la indexación de tareas mediante un ID único, permitiendo búsquedas, inserciones y eliminaciones en tiempo logarítmico $O(\log n)$[cite: 15].
+Sistema web para gestionar tareas utilizando estructuras de datos avanzadas: **Max Heap** para priorización y **Árbol AVL** para búsqueda eficiente.
 
-## Requisitos Técnicos
-* Lenguaje: JavaScript (ES6+)
-* Interfaz: HTML5 / CSS3 (No requiere instalación de librerías externas)
-* Navegador: Chrome, Firefox, Edge o Safari actualizado.
+## Descripción
 
-## Estructura de Archivos
-* `index.html`: Contiene la interfaz gráfica (GUI) y la lógica de integración.
-* Contiene las clases `Tarea`, `MaxHeap`, `AVLTree` y `TaskManager`.
+Aplicación que implementa una cola de prioridad mediante un Max Heap y permite búsqueda rápida de tareas por ID usando un Árbol AVL balanceado. Las tareas se ordenan automáticamente por prioridad (Alta > Media > Baja).
 
-## [cite_start]Cómo Ejecutar el Programa [cite: 58]
-1.  Descargue el archivo `index.html` proporcionado.
-2.  (Si separó el código JS) Asegúrese de que `script.js` esté en la misma carpeta.
-3.  Haga doble clic en el archivo `index.html` para abrirlo en su navegador web predeterminado.
-4.  **No se requiere servidor local**: Al ser JavaScript puro del lado del cliente (Front-end), funciona directamente desde el archivo.
+## Estructura del Proyecto
 
-## Guía de Uso
-1.  **Agregar Tarea:** Ingrese un ID (numérico), descripción, seleccione la prioridad (Alta, Media, Baja) y una fecha. Haga clic en "Agregar Tarea".
-2.  **Visualización:** Observe la lista a la derecha. Notará que independientemente del orden de inserción, las tareas de prioridad "Alta" siempre aparecerán arriba (gestionado por el Heap).
-3.  **Buscar Tarea:** En el panel izquierdo, ingrese un ID y pulse "Buscar". El sistema consultará el Árbol AVL para devolver el resultado instantáneamente.
-4.  **Completar Tarea:** Haga clic en "Completar" en cualquier tarea. Esto eliminará el elemento tanto del Montículo (reorganizando la prioridad) como del Árbol AVL (rebalanceando el árbol).
+```
+proyectoADA1/
+├── index.html              # Interfaz principal
+├── css/
+│   └── styles.css         # Estilos
+└── js/
+    ├── Task.js            # Clase Tarea
+    ├── MaxHeap.js         # Implementación Max Heap
+    ├── AVLTree.js         # Implementación Árbol AVL
+    ├── TaskManager.js     # Gestor de tareas
+    └── main.js            # Lógica de la interfaz
+```
 
-## Créditos
-Proyecto ADA1 - Diciembre 5 de 2025.
+## Funcionalidades
+
+### 1. Agregar Tarea
+- **Complejidad**: O(log n)
+- Inserta una nueva tarea en el Max Heap y el Árbol AVL
+- Valida que el ID sea único
+- Campos: ID, Descripción, Prioridad, Fecha de Vencimiento
+
+### 2. Buscar por ID
+- **Complejidad**: O(log n)
+- Búsqueda eficiente usando el Árbol AVL balanceado
+- Muestra toda la información de la tarea encontrada
+
+### 3. Cola de Prioridad
+- **Complejidad**: O(log n) por inserción
+- Visualiza tareas ordenadas automáticamente por prioridad
+- Max Heap mantiene la tarea de mayor prioridad en la raíz
+
+### 4. Marcar como Completada
+- **Complejidad**: O(n) para buscar + O(log n) para reajustar
+- Elimina la tarea del heap (se reajusta automáticamente)
+- La tarea permanece en el AVL marcada como completada
+
+## Complejidad Algorítmica
+
+| Operación | Complejidad | Descripción |
+|-----------|-------------|-------------|
+| Agregar tarea | O(log n) | Inserción en heap + AVL |
+| Buscar tarea | O(log n) | Búsqueda en árbol balanceado |
+| Completar tarea | O(n) | Búsqueda + eliminación del heap |
+| Visualizar heap | O(1) | Acceso al array interno |
+
+## Instalación y Uso
+
+1. **Clonar o descargar** el proyecto
+
+2. **Abrir** `index.html` en un navegador moderno
+
+3. **Agregar una tarea**:
+   - Ingresar ID único (número)
+   - Escribir descripción
+   - Seleccionar prioridad
+   - Elegir fecha de vencimiento
+   - Click en "Agregar Tarea"
+
+4. **Buscar tarea**:
+   - Ingresar ID en el campo de búsqueda
+   - Click en "Buscar"
+
+5. **Completar tarea**:
+   - Click en el botón "Completar" de cualquier tarea en la cola
+
+## Tecnologías
+
+- **HTML5**: Estructura de la interfaz
+- **CSS3**: Estilos modernos (variables CSS, gradientes, animaciones)
+- **JavaScript ES6**: Lógica de la aplicación (clases, arrow functions)
+
+## Autores
+
+Proyecto académico - Análisis y Diseño de Algoritmos I
