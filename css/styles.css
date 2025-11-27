@@ -381,10 +381,6 @@ body {
     color: white;
 }
 
-.notificacion-ocultar {
-    opacity: 0;
-    transform: translateY(-1rem);
-}
 
 @media (max-width: 768px) {
     .container {
