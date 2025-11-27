@@ -1,3 +1,4 @@
+// Función principal para manejar la interfaz y eventos
 const taskManager = new TaskManager();
 
 function handleAddTask() {

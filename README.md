@@ -6,7 +6,7 @@ Sistema web para gestionar tareas utilizando estructuras de datos avanzadas: **M
 
 Aplicación que implementa una cola de prioridad mediante un Max Heap y permite búsqueda rápida de tareas por ID usando un Árbol AVL balanceado. Las tareas se ordenan automáticamente por prioridad (Alta > Media > Baja).
 
-## Estructura del Proyecto
+## Estructura del proyecto
 
 ```
 proyectoADA1/
@@ -23,7 +23,7 @@ proyectoADA1/
 
 ## Funcionalidades
 
-### 1. Agregar Tarea
+### 1. Agregar tarea
 - **Complejidad**: O(log n)
 - Inserta una nueva tarea en el Max Heap y el Árbol AVL
 - Valida que el ID sea único
@@ -34,17 +34,17 @@ proyectoADA1/
 - Búsqueda eficiente usando el Árbol AVL balanceado
 - Muestra toda la información de la tarea encontrada
 
-### 3. Cola de Prioridad
+### 3. Cola de prioridad
 - **Complejidad**: O(log n) por inserción
 - Visualiza tareas ordenadas automáticamente por prioridad
 - Max Heap mantiene la tarea de mayor prioridad en la raíz
 
-### 4. Marcar como Completada
+### 4. Marcar como completada
 - **Complejidad**: O(n) para buscar + O(log n) para reajustar
 - Elimina la tarea del heap (se reajusta automáticamente)
 - La tarea permanece en el AVL marcada como completada
 
-## Complejidad Algorítmica
+## Complejidad algorítmica
 
 | Operación | Complejidad | Descripción |
 |-----------|-------------|-------------|
@@ -53,7 +53,7 @@ proyectoADA1/
 | Completar tarea | O(n) | Búsqueda + eliminación del heap |
 | Visualizar heap | O(1) | Acceso al array interno |
 
-## Instalación y Uso
+## Instalación y uso
 
 1. **Clonar o descargar** el proyecto
 
