@@ -46,7 +46,9 @@ function handleCompleteTask(id) {
 function updateHeapView() {
     const heapList = document.getElementById('heapList');
     const emptyState = document.getElementById('empty-state');
-    const tasks = taskManager.getHeapTasks();
+    const tasks = taskManager.getHeapTasks()
+        .slice()
+        .sort((a, b) => b.getPriorityValue() - a.getPriorityValue());
 
     if (tasks.length === 0) {
         heapList.style.display = 'none';
